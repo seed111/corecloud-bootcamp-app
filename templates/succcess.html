@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're In – CoreCloud AWS Bootcamp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0a0f2c;
+      --blue: #1d4ed8;
+      --electric: #3b82f6;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --white: #f8faff;
+      --muted: #94a3b8;
+      --card-bg: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0; pointer-events: none;
+    }
+    .blob { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.15; pointer-events: none; z-index: 0; }
+    .blob-1 { width: 500px; height: 500px; background: #10b981; top: -150px; right: -150px; }
+    .blob-2 { width: 400px; height: 400px; background: #1d4ed8; bottom: -100px; left: -100px; }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 500px;
+      backdrop-filter: blur(20px);
+      text-align: center;
+      animation: popIn 0.5s ease both;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--electric), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      margin-bottom: 2rem;
+    }
+
+    .check-ring {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      animation: ringPop 0.5s 0.2s ease both;
+    }
+
+    @keyframes ringPop {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .check-ring svg { animation: checkDraw 0.4s 0.5s ease both; opacity: 0; }
+    @keyframes checkDraw { from { opacity:0; transform: scale(0.5); } to { opacity:1; transform: scale(1); } }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.7rem;
+    }
+
+    .subtitle { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; }
+
+    .steps {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .steps-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+    }
+    .step:last-child { margin-bottom: 0; }
+
+    .step-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; }
+
+    .buttons { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+
+    .btn-home {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(59,130,246,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-home:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(59,130,246,0.55); }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(37,211,102,0.3);
+      transition: transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-whatsapp:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="card">
+    <span class="brand">CoreCloud ☁</span>
+
+    <div class="check-ring">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+
+    <h1>You're Registered! 🎉</h1>
+    <p class="subtitle">Welcome to CoreCloud. We've received your details and will reach out via email or WhatsApp shortly.</p>
+
+    <div class="steps">
+      <div class="steps-title">What Happens Next</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Check your email for a confirmation message from CoreCloud.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">You'll be added to our WhatsApp group for onboarding updates.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Your bootcamp journey begins — get ready to build real AWS projects!</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a href="/" class="btn-home">← Back to Home</a>
+      <a href="https://wa.me/393715409683" target="_blank" class="btn-whatsapp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" fill="white"><path d="M380.9 97.1C339-1.4 224.4-26.7 132.6 24.8 62 65.3 14.9 143.6 14.1 231c0 41.7 11.1 82.5 32.3 118.2L.6 480l132.4-34.6c34.4 18.6 73 28.3 112.1 28.3h.1c128.1 0 232.6-104.5 232.6-232.6.1-49.6-15.2-97.8-44-137.3zM224.5 438.7c-33.1 0-65.5-8.9-93.8-25.7l-6.7-3.9-78.7 20.5 21-76.6-4.4-7c-19.4-30.8-29.5-66.6-29.4-102.7 0-104.7 85.3-190 190-190 50.6 0 98.1 19.7 133.9 55.4 35.8 35.9 55.4 83.5 55.3 134-.1 104.7-85.2 189.8-190 189.8z"/></svg>
+        Join WhatsApp
+      </a>
+    </div>
+  </div>
+</body>
+</html>

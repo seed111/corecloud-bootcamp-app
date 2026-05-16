@@ -1,0 +1,10 @@
+.git
+.gitignore
+*.pyc
+__pycache__
+*.csv
+.env
+.DS_Store
+README.md
+terraform/
+.github/

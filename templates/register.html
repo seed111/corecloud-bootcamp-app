@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – CoreCloud AWS Bootcamp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0a0f2c;
+      --blue: #1d4ed8;
+      --electric: #3b82f6;
+      --cyan: #06b6d4;
+      --white: #f8faff;
+      --muted: #94a3b8;
+      --card-bg: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0; pointer-events: none;
+    }
+    .blob { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.15; pointer-events: none; z-index: 0; }
+    .blob-1 { width: 500px; height: 500px; background: #1d4ed8; top: -150px; left: -150px; }
+    .blob-2 { width: 400px; height: 400px; background: #06b6d4; bottom: -100px; right: -100px; }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 480px;
+      backdrop-filter: blur(20px);
+      animation: popIn 0.5s ease both;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card-header { text-align: center; margin-bottom: 2.5rem; }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--electric), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .card-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .form-group { margin-bottom: 1.2rem; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input::placeholder, textarea::placeholder { color: #475569; }
+
+    input:focus, textarea:focus {
+      border-color: var(--electric);
+      background: rgba(59,130,246,0.08);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+
+    textarea { resize: none; height: 110px; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(59,130,246,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(59,130,246,0.55); }
+    .btn-submit:active { transform: translateY(0); }
+
+    .card-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .card-footer a { color: var(--cyan); text-decoration: none; }
+    .card-footer a:hover { text-decoration: underline; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .divider span { font-size: 0.75rem; color: #334155; white-space: nowrap; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="brand">CoreCloud ☁</span>
+      <h1>Join the Bootcamp</h1>
+      <p>Fill in your details — we'll be in touch via email or WhatsApp.</p>
+    </div>
+
+    <form action="/register" method="POST">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="name" required placeholder="e.g. Amina Okonkwo" />
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" name="email" required placeholder="e.g. amina@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label>WhatsApp Number</label>
+        <input type="text" name="whatsapp" required placeholder="e.g. +234 800 000 0000" />
+      </div>
+
+      <div class="form-group">
+        <label>Why do you want to join?</label>
+        <textarea name="motivation" required placeholder="Tell us what motivated you..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Registration →</button>
+    </form>
+
+    <div class="divider"><span>or reach us directly</span></div>
+
+    <div class="card-footer">
+      <p>Questions? <a href="mailto:corecloud.info@gmail.com">corecloud.info@gmail.com</a></p>
+      <p style="margin-top: 0.5rem;"><a href="/">← Back to Home</a></p>
+    </div>
+  </div>
+</body>
+</html>

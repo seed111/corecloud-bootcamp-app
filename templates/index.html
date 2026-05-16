@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoreCloud AWS Bootcamp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0a0f2c;
+      --blue: #1d4ed8;
+      --electric: #3b82f6;
+      --cyan: #06b6d4;
+      --white: #f8faff;
+      --muted: #94a3b8;
+      --card-bg: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0; pointer-events: none;
+    }
+    .blob { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.18; pointer-events: none; z-index: 0; }
+    .blob-1 { width: 600px; height: 600px; background: #1d4ed8; top: -200px; left: -200px; }
+    .blob-2 { width: 500px; height: 500px; background: #06b6d4; bottom: -100px; right: -100px; animation: blobPulse 8s ease-in-out infinite alternate; }
+    .blob-3 { width: 400px; height: 400px; background: #7c3aed; top: 40%; left: 50%; transform: translate(-50%,-50%); animation: blobPulse 12s ease-in-out infinite alternate-reverse; }
+    @keyframes blobPulse { from { transform: scale(1); } to { transform: scale(1.3); } }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,15,44,0.8); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; background: linear-gradient(90deg, var(--electric), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: white !important; padding: 0.5rem 1.4rem; border-radius: 8px; font-weight: 600 !important; }
+
+    .hero { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3);
+      color: var(--cyan); font-size: 0.8rem; font-weight: 600;
+      padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 2rem;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      animation: fadeDown 0.6s ease both;
+    }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(1.5); } }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 1.5rem; animation: fadeUp 0.7s 0.1s ease both; }
+    .hero h1 span { background: linear-gradient(90deg, var(--electric), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { max-width: 600px; font-size: 1.15rem; color: var(--muted); line-height: 1.7; margin-bottom: 2.5rem; animation: fadeUp 0.7s 0.2s ease both; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.7s 0.3s ease both; }
+    .btn-primary { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: white; padding: 0.9rem 2.2rem; border-radius: 10px; font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 0 30px rgba(59,130,246,0.4); transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(59,130,246,0.6); }
+    .btn-outline { border: 1px solid var(--border); color: var(--white); padding: 0.9rem 2.2rem; border-radius: 10px; font-weight: 500; font-size: 1rem; text-decoration: none; background: var(--card-bg); transition: border-color 0.2s; }
+    .btn-outline:hover { border-color: var(--electric); background: rgba(59,130,246,0.1); }
+
+    .stats { position: relative; z-index: 1; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; padding: 3rem 2rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { text-align: center; }
+    .stat-number { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; background: linear-gradient(90deg, var(--electric), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
+
+    section { position: relative; z-index: 1; padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .section-tag { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; }
+    .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 540px; line-height: 1.7; margin-bottom: 3rem; }
+
+    .curriculum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .month-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; transition: transform 0.3s, border-color 0.3s; }
+    .month-card:hover { transform: translateY(-4px); border-color: rgba(59,130,246,0.4); }
+    .month-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+    .month-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.5rem; }
+    .month-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .month-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem; }
+    .month-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .month-card li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: #cbd5e1; }
+    .month-card li::before { content: '→'; color: var(--cyan); font-weight: 700; flex-shrink: 0; }
+
+    .instructor-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 3rem; display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; }
+    .instructor-avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--cyan)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; flex-shrink: 0; box-shadow: 0 0 40px rgba(59,130,246,0.4); }
+    .instructor-name { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .instructor-role { color: var(--cyan); font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; }
+    .instructor-bio { color: #94a3b8; line-height: 1.8; max-width: 500px; }
+
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+    .testimonial { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; transition: border-color 0.3s; }
+    .testimonial:hover { border-color: rgba(6,182,212,0.3); }
+    .testimonial-text { color: #cbd5e1; font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
+    .testimonial-author { color: var(--cyan); font-weight: 600; font-size: 0.85rem; }
+
+    .cta-section { text-align: center; padding: 6rem 2rem; position: relative; z-index: 1; border-top: 1px solid var(--border); }
+    .cta-section h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; }
+    .cta-section p { color: var(--muted); margin-bottom: 2rem; font-size: 1.05rem; }
+
+    footer { position: relative; z-index: 1; text-align: center; padding: 2rem; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--cyan); text-decoration: none; }
+
+    .whatsapp-btn { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200; background: #25D366; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: transform 0.2s; }
+    .whatsapp-btn:hover { transform: scale(1.1); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <nav>
+    <div class="nav-brand">CoreCloud ☁</div>
+    <ul class="nav-links">
+      <li><a href="#curriculum">Curriculum</a></li>
+      <li><a href="#instructor">Instructor</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="/register" class="nav-cta">Register Now</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">Now Enrolling · Limited Spots</div>
+    <h1>Master <span>AWS</span><br>in 3 Months</h1>
+    <p>Join CoreCloud's immersive cloud bootcamp and become job-ready with real-world AWS + Linux experience. Every concept is backed by labs, demos, and projects.</p>
+    <div class="hero-buttons">
+      <a href="/register" class="btn-primary">Register Now →</a>
+      <a href="#curriculum" class="btn-outline">View Curriculum</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-number">300+</div><div class="stat-label">Students Trained</div></div>
+    <div class="stat"><div class="stat-number">3</div><div class="stat-label">Months to Job-Ready</div></div>
+    <div class="stat"><div class="stat-number">2</div><div class="stat-label">Interview Opportunities</div></div>
+    <div class="stat"><div class="stat-number">100%</div><div class="stat-label">Hands-On Learning</div></div>
+  </div>
+
+  <section id="curriculum">
+    <div class="reveal">
+      <div class="section-tag">The Programme</div>
+      <div class="section-title">What You'll Learn</div>
+      <div class="section-sub">Three months of structured, hands-on cloud training — from Linux basics to AWS certification readiness.</div>
+    </div>
+    <div class="curriculum-grid reveal">
+      <div class="month-card">
+        <div class="month-label">Month 01</div>
+        <div class="month-title">AWS Core + Linux</div>
+        <div class="month-sub">Build your foundation</div>
+        <ul>
+          <li>Linux commands & basics</li>
+          <li>IAM fundamentals</li>
+          <li>EC2 instances & S3 storage</li>
+          <li>CloudShell & AWS CLI</li>
+          <li>SSH & file system navigation</li>
+        </ul>
+      </div>
+      <div class="month-card">
+        <div class="month-label">Month 02</div>
+        <div class="month-title">Real Projects + Serverless</div>
+        <div class="month-sub">Build real infrastructure</div>
+        <ul>
+          <li>VPC design & networking</li>
+          <li>Lambda functions</li>
+          <li>RDS & managed databases</li>
+          <li>Auto Scaling & CloudWatch</li>
+          <li>Security groups & architecture</li>
+        </ul>
+      </div>
+      <div class="month-card">
+        <div class="month-label">Month 03</div>
+        <div class="month-title">Certification + Career</div>
+        <div class="month-sub">Get hired</div>
+        <ul>
+          <li>Cloud Practitioner prep</li>
+          <li>Solutions Architect prep</li>
+          <li>Resume & mock interviews</li>
+          <li>LinkedIn optimization</li>
+          <li>Career coaching & guidance</li>
+        </ul>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:2.5rem; color:var(--cyan); font-weight:600;">✦ 2 interview opportunities with real companies at graduation</p>
+  </section>
+
+  <section id="instructor">
+    <div class="reveal">
+      <div class="section-tag">Your Guide</div>
+      <div class="section-title">Meet Your Instructor</div>
+    </div>
+    <div class="instructor-card reveal">
+      <div class="instructor-avatar">FA</div>
+      <div>
+        <div class="instructor-name">Fayemi Abraham</div>
+        <div class="instructor-role">AWS Cloud Expert · Python Developer · DevOps Engineer</div>
+        <p class="instructor-bio">Fayemi has trained over 300 students in the last year alone. Known for his hands-on approach and clarity, he ensures students not only understand theory — but can apply it confidently in real-world cloud environments. Based in Italy, teaching globally.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <div class="reveal">
+      <div class="section-tag">Student Stories</div>
+      <div class="section-title">What Our Students Say</div>
+      <div class="section-sub">Real feedback from students across Africa, Asia, and Europe.</div>
+    </div>
+    <div class="testimonials-grid reveal">
+      <div class="testimonial"><p class="testimonial-text">"Thanks to CoreCloud, I landed my first job in cloud computing!"</p><div class="testimonial-author">— Amina, Nigeria</div></div>
+      <div class="testimonial"><p class="testimonial-text">"The projects were super practical and relevant to real jobs."</p><div class="testimonial-author">— Emmanuel, Nigeria</div></div>
+      <div class="testimonial"><p class="testimonial-text">"Fayemi's teaching style is so clear and beginner-friendly."</p><div class="testimonial-author">— Sarah, Kenya</div></div>
+      <div class="testimonial"><p class="testimonial-text">"I passed my AWS certification with full confidence!"</p><div class="testimonial-author">— Fatima, Ivory Coast</div></div>
+      <div class="testimonial"><p class="testimonial-text">"Great balance of theory, hands-on work, and mentorship."</p><div class="testimonial-author">— Priya, India</div></div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <h2>Ready to Start Your<br><span style="background:linear-gradient(90deg,#3b82f6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Cloud Career?</span></h2>
+    <p>Limited spots available. Register today and take the first step.</p>
+    <a href="/register" class="btn-primary">Register for the Bootcamp →</a>
+    <p style="margin-top:1.2rem;font-size:0.85rem;">Questions? <a href="mailto:corecloud.info@gmail.com" style="color:var(--cyan);">corecloud.info@gmail.com</a></p>
+  </div>
+
+  <footer><p>© 2025 CoreCloud · Built with Flask + AWS · <a href="mailto:corecloud.info@gmail.com">corecloud.info@gmail.com</a></p></footer>
+
+  <a href="https://wa.me/393715409683" class="whatsapp-btn" target="_blank" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 448 512" fill="white"><path d="M380.9 97.1C339-1.4 224.4-26.7 132.6 24.8 62 65.3 14.9 143.6 14.1 231c0 41.7 11.1 82.5 32.3 118.2L.6 480l132.4-34.6c34.4 18.6 73 28.3 112.1 28.3h.1c128.1 0 232.6-104.5 232.6-232.6.1-49.6-15.2-97.8-44-137.3zM224.5 438.7c-33.1 0-65.5-8.9-93.8-25.7l-6.7-3.9-78.7 20.5 21-76.6-4.4-7c-19.4-30.8-29.5-66.6-29.4-102.7 0-104.7 85.3-190 190-190 50.6 0 98.1 19.7 133.9 55.4 35.8 35.9 55.4 83.5 55.3 134-.1 104.7-85.2 189.8-190 189.8z"/></svg>
+  </a>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 100); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
