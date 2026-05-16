@@ -1,23 +1,16 @@
 from flask import Flask, render_template, request, redirect
-from flask_mail import Mail, Message
 import boto3
+from botocore.exceptions import ClientError
 import os
 import uuid
 from datetime import datetime
 
 app = Flask(__name__)
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
-
-mail = Mail(app)
-
 dynamodb = boto3.resource('dynamodb', region_name=os.environ.get('AWS_REGION', 'eu-west-1'))
 table = dynamodb.Table(os.environ.get('DYNAMODB_TABLE', 'corecloud-bootcamp-registrations'))
+
+ses = boto3.client('ses', region_name=os.environ.get('AWS_REGION', 'eu-west-1'))
 
 @app.route('/')
 def index():
@@ -41,21 +34,26 @@ def register():
         })
 
         try:
-            admin_msg = Message(
-                'New Student Registration',
-                recipients=[os.environ.get('ADMIN_EMAIL')]
-            )
-            admin_msg.body = f'''
-New registration received:
+            ses.send_email(
+                Source=os.environ.get('ADMIN_EMAIL'),
+                Destination={'ToAddresses': [os.environ.get('ADMIN_EMAIL')]},
+                Message={
+                    'Subject': {'Data': 'New Student Registration'},
+                    'Body': {
+                        'Text': {
+                            'Data': f'''New registration received:
 
 Name: {name}
 Email: {email}
 WhatsApp: {whatsapp}
 Motivation: {motivation}
 '''
-            mail.send(admin_msg)
-        except Exception as e:
-            print(f"Email failed: {e}")
+                        }
+                    }
+                }
+            )
+        except ClientError as e:
+            print(f"SES email failed: {e}")
 
         return redirect('/success')
     return render_template('register.html')
