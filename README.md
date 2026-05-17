@@ -113,5 +113,5 @@ terraform destroy \
 ```
 
 ## Author
-Fayemi Abraham — Cloud & DevOps Engineer
+Fayemi Abraham  Cloud & DevOps Engineer
 GitHub: github.com/seed111
