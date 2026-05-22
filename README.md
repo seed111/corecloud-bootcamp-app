@@ -254,7 +254,7 @@ Splitting Terraform into nine separate files made the infrastructure much easier
 
 ## Author
 
-**Fayemi Abraham** — Cloud & DevOps Engineer
+**Fayemi Abraham**  Cloud & DevOps Engineer
 
 [![GitHub](https://img.shields.io/badge/GitHub-seed111-black?style=flat-square&logo=github)](https://github.com/seed111)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Fayemi%20Abraham-blue?style=flat-square&logo=linkedin)](https://linkedin.com/in/abraham-fayemi-0032382a0)
