@@ -66,7 +66,7 @@ DynamoDB (Registration data) + SES (Email alerts)
 
 The project was built in four stages. Each stage built on top of the previous one.
 
-### Stage 1 — Application
+### Stage 1  Application
 
 Flask was chosen because it is lightweight and easy to deploy inside a container. The app has three routes — home, register and success. When a student submits the registration form the data goes straight to DynamoDB and an email notification is sent via AWS SES.
 
@@ -94,7 +94,7 @@ Images are pushed to AWS ECR with a lifecycle policy that keeps only the last fi
 
 All AWS infrastructure is defined in Terraform across nine files. Each file handles one area of concern which makes the infrastructure easier to read, maintain and debug. Details of each file are in the [Terraform Files](#terraform-files) section below.
 
-### Stage 4 — CI/CD Pipeline
+### Stage 4  CI/CD Pipeline
 
 GitHub Actions was chosen because the code is already on GitHub and the integration is seamless. No additional tools or accounts are needed. Details of the pipeline steps are in the [CI/CD Pipeline](#cicd-pipeline) section below.
 
